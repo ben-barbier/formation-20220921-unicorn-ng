@@ -7,8 +7,8 @@ import { AppComponent } from './app.component';
 import { UnicornsListComponent } from './pages/unicorns-list/unicorns-list.component';
 
 @NgModule({
-  declarations: [AppComponent, UnicornsListComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, UnicornsListComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
