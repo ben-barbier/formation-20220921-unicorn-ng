@@ -1,4 +1,6 @@
-export interface Unicorn {
+import { Capacity } from './capacity.model';
+
+export interface UnicornDTO {
   id: number;
   name: string;
   birthyear: number;
@@ -7,3 +9,7 @@ export interface Unicorn {
   hobbies: string[];
   capacities: number[];
 }
+
+export type UnicornWithCapacities = Omit<UnicornDTO, 'capacities'> & {
+  capacities: Capacity[];
+};

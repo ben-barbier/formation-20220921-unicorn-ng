@@ -1,16 +1,65 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { concatAll, concatMap, delay, filter, forkJoin, from, mergeMap, Observable, toArray } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Unicorn } from '../models/unicorn.model';
+import { Capacity } from '../models/capacity.model';
+import { UnicornDTO, UnicornWithCapacities } from '../models/unicorn.model';
+import { CapacitiesService } from './capacities.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UnicornsService {
-  constructor(private readonly _http: HttpClient) {}
+  constructor(private readonly _http: HttpClient, private readonly _capacitiesService: CapacitiesService) {}
 
-  public getAll(): Observable<Unicorn[]> {
-    return this._http.get<Unicorn[]>(`${environment.apiUrl}/unicorns`);
+  public getAll(): Observable<UnicornDTO[]> {
+    return this._http.get<UnicornDTO[]>(`${environment.apiUrl}/unicorns`);
+  }
+
+  public get(id: number): Observable<UnicornDTO> {
+    return this._http.get<UnicornDTO>(`${environment.apiUrl}/unicorns/${id}`).pipe(delay(Math.random() * 1000));
+  }
+
+  public getSuperUnicorns(): Observable<UnicornDTO[]> {
+    return this.getAll().pipe(
+      concatAll(),
+      filter(u => u.weight > 100),
+      map(u => ({ ...u, name: u.name.toUpperCase() })),
+      map(u => ({ ...u, weight: u.weight - 10 })),
+      map(u => ({ ...u, hobbies: u.hobbies.concat('DEV') })),
+      toArray()
+    );
+  }
+
+  public deleteUnicorns(unicorns: UnicornDTO[]): Observable<any> {
+    return from(unicorns).pipe(concatMap(unicorn => this._http.delete(`${environment.apiUrl}/unicorns/${unicorn.id}`)));
+  }
+
+  public getAllWithCapacitiesLabels(): Observable<UnicornWithCapacities[]> {
+    return this.getAll().pipe(
+      concatAll(),
+      mergeMap(unicorn =>
+        from(unicorn.capacities).pipe(
+          mergeMap(capacityId => this._capacitiesService.get(capacityId)),
+          toArray(),
+          map(capacities => ({ ...unicorn, capacities: capacities }))
+        )
+      ),
+      toArray()
+    );
+  }
+
+  public getAllWithCapacitiesLabels2(): Observable<UnicornWithCapacities[]> {
+    return forkJoin([this.getAll(), this._capacitiesService.getAll()]).pipe(
+      map(([unicorns, capacities]: [UnicornDTO[], Capacity[]]): UnicornWithCapacities[] => {
+        return unicorns.map((unicorn: UnicornDTO): UnicornWithCapacities => {
+          return {
+            ...unicorn,
+            capacities: unicorn.capacities.map(capacityId => capacities.find(c => c.id === capacityId) as Capacity),
+          };
+        });
+      })
+    );
   }
 }
