@@ -15,4 +15,8 @@ export class NavComponent {
   );
 
   constructor(private breakpointObserver: BreakpointObserver) {}
+
+  public cleanCart(): void {
+    // TODO...
+  }
 }

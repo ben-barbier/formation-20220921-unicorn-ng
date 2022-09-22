@@ -10,6 +10,6 @@ export interface UnicornDTO {
   capacities: number[];
 }
 
-export type UnicornWithCapacities = Omit<UnicornDTO, 'capacities'> & {
+export type Unicorn = Omit<UnicornDTO, 'capacities'> & {
   capacities: Capacity[];
 };

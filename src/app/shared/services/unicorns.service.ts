@@ -4,7 +4,7 @@ import { concatAll, concatMap, delay, filter, forkJoin, from, mergeMap, Observab
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Capacity } from '../models/capacity.model';
-import { UnicornDTO, UnicornWithCapacities } from '../models/unicorn.model';
+import { Unicorn, UnicornDTO } from '../models/unicorn.model';
 import { CapacitiesService } from './capacities.service';
 
 @Injectable({
@@ -36,7 +36,7 @@ export class UnicornsService {
     return from(unicorns).pipe(concatMap(unicorn => this._http.delete(`${environment.apiUrl}/unicorns/${unicorn.id}`)));
   }
 
-  public getAllWithCapacitiesLabels(): Observable<UnicornWithCapacities[]> {
+  public getAllWithCapacitiesLabels(): Observable<Unicorn[]> {
     return this.getAll().pipe(
       concatAll(),
       mergeMap(unicorn =>
@@ -50,10 +50,10 @@ export class UnicornsService {
     );
   }
 
-  public getAllWithCapacitiesLabels2(): Observable<UnicornWithCapacities[]> {
+  public getAllWithCapacitiesLabels2(): Observable<Unicorn[]> {
     return forkJoin([this.getAll(), this._capacitiesService.getAll()]).pipe(
-      map(([unicorns, capacities]: [UnicornDTO[], Capacity[]]): UnicornWithCapacities[] => {
-        return unicorns.map((unicorn: UnicornDTO): UnicornWithCapacities => {
+      map(([unicorns, capacities]: [UnicornDTO[], Capacity[]]): Unicorn[] => {
+        return unicorns.map((unicorn: UnicornDTO): Unicorn => {
           return {
             ...unicorn,
             capacities: unicorn.capacities.map(capacityId => capacities.find(c => c.id === capacityId) as Capacity),

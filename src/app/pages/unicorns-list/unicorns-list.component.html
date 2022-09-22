@@ -1,5 +1,1 @@
-<button mat-raised-button color="primary">Edit</button>
-
-<mat-icon>account_box</mat-icon>
-
-<pre>{{ unicorns$ | async | json }}</pre>
+<app-unicorn-card *ngFor="let unicorn of unicorns$ | async; trackBy: trackById" [unicorn]="unicorn"></app-unicorn-card>
