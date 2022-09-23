@@ -1,6 +1,6 @@
 import { Capacity } from './capacity.model';
 
-export interface UnicornDTO {
+export type UnicornDTO = {
   id: number;
   name: string;
   birthyear: number;
@@ -8,7 +8,7 @@ export interface UnicornDTO {
   photo: string;
   hobbies: string[];
   capacities: number[];
-}
+};
 
 export type Unicorn = Omit<UnicornDTO, 'capacities'> & {
   capacities: Capacity[];

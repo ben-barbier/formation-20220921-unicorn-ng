@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Unicorn } from '../../../shared/models/unicorn.model';
+import { CartService } from '../../../shared/services/cart.service';
 import { EditUnicornComponent } from './edit-unicorn/edit-unicorn.component';
 
 @Component({
@@ -12,12 +13,12 @@ import { EditUnicornComponent } from './edit-unicorn/edit-unicorn.component';
 export class UnicornCardComponent {
   @Input() public unicorn!: Unicorn;
 
-  public isInCart$: Observable<boolean> | undefined;
+  public isInCart$ = this._cartService.cart$.pipe(map(cart => cart.some(u => u.id === this.unicorn.id)));
 
-  constructor(private readonly _dialog: MatDialog) {}
+  constructor(private readonly _dialog: MatDialog, private readonly _cartService: CartService) {}
 
   public toggleToCart(unicorn: Unicorn): void {
-    // TODO: implement...
+    this._cartService.toggleToCart(unicorn);
   }
 
   public deleteUnicorn(unicorn: Unicorn): void {

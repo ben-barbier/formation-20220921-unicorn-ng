@@ -2,6 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-nav',
@@ -14,9 +15,11 @@ export class NavComponent {
     shareReplay()
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  public cart$ = this._cartService.cart$;
+
+  constructor(private breakpointObserver: BreakpointObserver, private readonly _cartService: CartService) {}
 
   public cleanCart(): void {
-    // TODO...
+    this._cartService.clearCart();
   }
 }
