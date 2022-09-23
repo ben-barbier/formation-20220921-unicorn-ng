@@ -21,7 +21,7 @@ export class UnicornsService {
     return this._http.get<UnicornDTO>(`${environment.apiUrl}/unicorns/${id}`).pipe(delay(Math.random() * 1000));
   }
 
-  public delete(unicorn: Unicorn): Observable<void> {
+  public delete(unicorn: UnicornDTO): Observable<void> {
     return this._http.delete<void>(`${environment.apiUrl}/unicorns/${unicorn.id}`).pipe(delay(Math.random() * 1000));
   }
 

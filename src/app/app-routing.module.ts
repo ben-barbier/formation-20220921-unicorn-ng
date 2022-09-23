@@ -6,6 +6,7 @@ import { UnicornsListComponent } from './pages/unicorns-list/unicorns-list.compo
 const routes: Routes = [
   { path: 'unicorns', component: UnicornsListComponent },
   { path: 'unicorn/:id', component: UnicornDetailsComponent },
+  { path: 'admin', loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule) },
   { path: '**', redirectTo: 'unicorns' },
 ];
 

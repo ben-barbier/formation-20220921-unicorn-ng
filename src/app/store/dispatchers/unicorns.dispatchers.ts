@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Unicorn } from '../../shared/models/unicorn.model';
+import { Unicorn, UnicornDTO } from '../../shared/models/unicorn.model';
 import { deleteUnicorn, getUnicorn, getUnicorns, updateUnicorn } from '../actions/unicorns.actions';
 import { EntityState } from '../reducers';
 
@@ -16,7 +16,7 @@ export class UnicornsDispatchers {
     this.store.dispatch(getUnicorn({ id }));
   }
 
-  public deleteUnicorn(unicorn: Unicorn): void {
+  public deleteUnicorn(unicorn: UnicornDTO): void {
     this.store.dispatch(deleteUnicorn({ unicorn }));
   }
 

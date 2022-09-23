@@ -17,6 +17,6 @@ export const updateUnicornSuccess = createAction('[Unicorns] UPDATE_UNICORN_SUCC
 export const updateUnicornError = createAction('[Unicorns] UPDATE_UNICORN_ERROR');
 
 // 🎯 deleteUnicorn
-export const deleteUnicorn = createAction('[Unicorns] DELETE_UNICORN', props<{ unicorn: Unicorn }>());
-export const deleteUnicornSuccess = createAction('[Unicorns] DELETE_UNICORN_SUCCESS', props<{ unicorn: Unicorn }>());
+export const deleteUnicorn = createAction('[Unicorns] DELETE_UNICORN', props<{ unicorn: UnicornDTO }>());
+export const deleteUnicornSuccess = createAction('[Unicorns] DELETE_UNICORN_SUCCESS', props<{ unicorn: UnicornDTO }>());
 export const deleteUnicornError = createAction('[Unicorns] DELETE_UNICORN_ERROR');

@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { map } from 'rxjs/operators';
-import { Unicorn } from '../../../shared/models/unicorn.model';
-import { CartService } from '../../../shared/services/cart.service';
+import { Observable } from 'rxjs';
+import { UnicornDTO } from '../../../shared/models/unicorn.model';
+import { CartDispatchers } from '../../../store/dispatchers/cart.dispatchers';
 import { UnicornsDispatchers } from '../../../store/dispatchers/unicorns.dispatchers';
+import { CartSelectors } from '../../../store/selectors/cart.selectors';
 import { EditUnicornComponent } from './edit-unicorn/edit-unicorn.component';
 
 @Component({
@@ -11,22 +12,27 @@ import { EditUnicornComponent } from './edit-unicorn/edit-unicorn.component';
   templateUrl: './unicorn-card.component.html',
   styleUrls: ['./unicorn-card.component.scss'],
 })
-export class UnicornCardComponent {
-  @Input() public unicorn!: Unicorn;
+export class UnicornCardComponent implements OnInit {
+  @Input() public unicorn!: UnicornDTO;
 
-  public isInCart$ = this._cartService.cart$.pipe(map(cart => cart.some(u => u.id === this.unicorn.id)));
+  public isInCart$: Observable<boolean> | undefined;
+
+  ngOnInit(): void {
+    this.isInCart$ = this._cartSelectors.isInCart$(this.unicorn);
+  }
 
   constructor(
     private readonly _dialog: MatDialog,
-    private readonly _cartService: CartService,
-    private readonly _unicornsDispatchers: UnicornsDispatchers
+    private readonly _unicornsDispatchers: UnicornsDispatchers,
+    private readonly _cartDispatchers: CartDispatchers,
+    private readonly _cartSelectors: CartSelectors
   ) {}
 
-  public toggleToCart(unicorn: Unicorn): void {
-    this._cartService.toggleToCart(unicorn);
+  public toggleToCart(unicorn: UnicornDTO): void {
+    this._cartDispatchers.toggleToCart(unicorn);
   }
 
-  public deleteUnicorn(unicorn: Unicorn): void {
+  public deleteUnicorn(unicorn: UnicornDTO): void {
     this._unicornsDispatchers.deleteUnicorn(unicorn);
   }
 

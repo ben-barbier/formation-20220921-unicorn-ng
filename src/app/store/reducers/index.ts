@@ -1,16 +1,17 @@
-import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { environment } from '../../../environments/environment';
+import { Action, ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { localStorageSync } from 'ngrx-store-localstorage';
 import { UnicornDTO } from '../../shared/models/unicorn.model';
+import { cartReducer } from './cart.reducer';
 import { unicornsReducer } from './unicorns.reducer';
 
 export interface EntityState {
   unicorns: UnicornDTO[];
-  // cart: number[]; // Identifiants de licornes
+  cart: number[]; // Identifiants de licornes
 }
 
 export const reducers: ActionReducerMap<EntityState> = {
   unicorns: unicornsReducer,
-  // cart: cartReducer,
+  cart: cartReducer,
   // here is where i put other reducers, when i have them
 };
 
@@ -22,4 +23,8 @@ function debug(reducer: ActionReducer<any>): ActionReducer<any> {
   };
 }
 
-export const metaReducers: MetaReducer<EntityState>[] = !environment.production ? [debug] : [];
+const localStorageSyncReducer = (reducer: ActionReducer<EntityState>): ActionReducer<EntityState> => {
+  return localStorageSync({ keys: ['unicorns', 'cart'], rehydrate: true })(reducer);
+};
+
+export const metaReducers: MetaReducer<EntityState, Action>[] = [localStorageSyncReducer];

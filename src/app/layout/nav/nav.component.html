@@ -11,6 +11,7 @@
       <a mat-list-item routerLink="/">List</a>
       <a mat-list-item routerLink="/unicorn/1">Unicorn 1</a>
       <a mat-list-item routerLink="/unicorn/2">Unicorn 2</a>
+      <a mat-list-item routerLink="/admin">Admin</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -20,7 +21,7 @@
       </button>
       <span>unicorn-ng</span>
       <span class="spacer"></span>
-      <mat-icon [matBadge]="(cart$ | async)?.length" matBadgeColor="accent">favorite</mat-icon>
+      <mat-icon [matBadge]="cartSize$ | async" matBadgeColor="accent">favorite</mat-icon>
       <button mat-icon-button type="button" (click)="cleanCart()"><mat-icon>delete</mat-icon></button>
     </mat-toolbar>
     <!-- Add Content Here -->

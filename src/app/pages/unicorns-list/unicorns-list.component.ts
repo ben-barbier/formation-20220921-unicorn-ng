@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Unicorn } from '../../shared/models/unicorn.model';
+import { UnicornDTO } from '../../shared/models/unicorn.model';
 import { UnicornsDispatchers } from '../../store/dispatchers/unicorns.dispatchers';
 import { UnicornsSelectors } from '../../store/selectors/unicorns.selectors';
 
@@ -11,7 +11,7 @@ import { UnicornsSelectors } from '../../store/selectors/unicorns.selectors';
 export class UnicornsListComponent {
   public unicorns$ = this._unicornsSelectors.unicorns$;
 
-  public trackById = (index: number, unicorn: Unicorn) => unicorn.id;
+  public trackById = (index: number, unicorn: UnicornDTO) => unicorn.id;
 
   constructor(private readonly _unicornsDispatchers: UnicornsDispatchers, private readonly _unicornsSelectors: UnicornsSelectors) {
     this._unicornsDispatchers.getUnicorns();
