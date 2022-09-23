@@ -1,7 +1,7 @@
 import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
 import { UnicornDTO } from '../../shared/models/unicorn.model';
-import { unicornsReducer } from './unicorns.reducers';
+import { unicornsReducer } from './unicorns.reducer';
 
 export interface EntityState {
   unicorns: UnicornDTO[];
