@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Unicorn } from '../../shared/models/unicorn.model';
-import { UnicornsService } from '../../shared/services/unicorns.service';
+import { UnicornsDispatchers } from '../../store/dispatchers/unicorns.dispatchers';
+import { UnicornsSelectors } from '../../store/selectors/unicorns.selectors';
 
 @Component({
   selector: 'app-unicorns-list',
@@ -8,11 +9,11 @@ import { UnicornsService } from '../../shared/services/unicorns.service';
   styleUrls: ['./unicorns-list.component.scss'],
 })
 export class UnicornsListComponent {
-  public unicorns$ = inject(UnicornsService).getAllWithCapacitiesLabels();
+  public unicorns$ = this._unicornsSelectors.unicorns$;
 
   public trackById = (index: number, unicorn: Unicorn) => unicorn.id;
 
-  public deleteUnicorn(unicorn: Unicorn): void {
-    // TODO
+  constructor(private readonly _unicornsDispatchers: UnicornsDispatchers, private readonly _unicornsSelectors: UnicornsSelectors) {
+    this._unicornsDispatchers.getUnicorns();
   }
 }

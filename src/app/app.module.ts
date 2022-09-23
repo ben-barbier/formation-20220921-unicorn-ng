@@ -21,6 +21,7 @@ import { UnicornDetailsComponent } from './pages/unicorn-details/unicorn-details
 import { EditUnicornComponent } from './pages/unicorns-list/unicorn-card/edit-unicorn/edit-unicorn.component';
 import { UnicornCardComponent } from './pages/unicorns-list/unicorn-card/unicorn-card.component';
 import { UnicornsListComponent } from './pages/unicorns-list/unicorns-list.component';
+import { AppStoreModule } from './store/app-store.module';
 
 @NgModule({
   declarations: [AppComponent, UnicornsListComponent, NavComponent, UnicornDetailsComponent, UnicornCardComponent, EditUnicornComponent],
@@ -41,6 +42,7 @@ import { UnicornsListComponent } from './pages/unicorns-list/unicorns-list.compo
     MatDialogModule,
     MatInputModule,
     MatBadgeModule,
+    AppStoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

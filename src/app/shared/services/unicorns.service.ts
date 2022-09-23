@@ -21,6 +21,16 @@ export class UnicornsService {
     return this._http.get<UnicornDTO>(`${environment.apiUrl}/unicorns/${id}`).pipe(delay(Math.random() * 1000));
   }
 
+  public delete(unicorn: Unicorn): Observable<void> {
+    return this._http.delete<void>(`${environment.apiUrl}/unicorns/${unicorn.id}`).pipe(delay(Math.random() * 1000));
+  }
+
+  public update(unicorn: Unicorn): Observable<UnicornDTO> {
+    const unicornToUpdate: UnicornDTO = { ...unicorn, capacities: unicorn.capacities.map(c => c.id) };
+
+    return this._http.put<UnicornDTO>(`${environment.apiUrl}/unicorns/${unicorn.id}`, unicornToUpdate).pipe(delay(Math.random() * 1000));
+  }
+
   public getSuperUnicorns(): Observable<UnicornDTO[]> {
     return this.getAll().pipe(
       concatAll(),
